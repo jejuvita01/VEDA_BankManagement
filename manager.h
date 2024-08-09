@@ -14,8 +14,6 @@ class Manager : public Person {
 public:
     Manager();
     Manager(string name, int age);
-    string who_is_this();
-    virtual void show_all_account();
     virtual void make_deposit();
     virtual void make_saving();
     virtual void insert_deposit(int);

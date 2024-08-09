@@ -6,7 +6,7 @@
 #include <map>
 #include "Person.h"
 
-loginwidget::loginwidget(QWidget *parent, map<string, pair<string, Person*>> sys) // map; id: <pw,person>
+loginwidget::loginwidget(QWidget *parent) // map; id: <pw,person>
     : QWidget(parent)
 {
     QStringList labels;
@@ -21,13 +21,13 @@ loginwidget::loginwidget(QWidget *parent, map<string, pair<string, Person*>> sys
     QPushButton *lgnBtn = new QPushButton("login");
     lgnBtn->setCheckable(true);
     // lgnBtn->show();
-    connect(lgnBtn, &QPushButton::clicked, [=]() {
-        if (sys.find(id) != sys.end() && sys.find(id) == pw) {
-            if (dynamic_cast<User*>(sys.find(id).second.second)) {
+    // connect(lgnBtn, &QPushButton::clicked, [=]() {
+    //     if (sys.find(id) != sys.end() && sys.find(id) == pw) {
+    //         if (dynamic_cast<User*>(sys.find(id).second.second)) {
 
-            }
-        }
-    });
+    //         }
+    //     }
+    // });
 
     formLayout->addRow("", lgnBtn);
 
@@ -44,10 +44,10 @@ loginwidget::loginwidget(QWidget *parent, map<string, pair<string, Person*>> sys
     });
 }
 
-void loginwidget::setData(map<string, pair<string, Person*>> sys)
-{
-    this->sys = sys;
-}
+// void loginwidget::setData(map<string, pair<string, Person*>> sys)
+// {
+//     this->sys = sys;
+// }
 
 
 loginwidget::~loginwidget() {}

@@ -5,9 +5,7 @@
 //  Created by 김서현 on 8/1/24.
 //
 
-#include <iostream>
 #include <string>
-#include <vector>
 
 using namespace std;
 

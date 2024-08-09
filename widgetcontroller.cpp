@@ -1,10 +1,17 @@
+#include "loginwidget.h"
 #include "widgetcontroller.h"
+
 #include <QWidget>
 #include <QObject>
 #include <QMainWindow>
-#include "loginwidget.h"
 
-WidgetController::WidgetController() {
-    lgnwdg = new loginwidget;
+WidgetController::WidgetController(QWidget* parent)
+    : QMainWindow(parent)
+{
+    lgnwdg = new loginwidget(this);
     setCentralWidget(lgnwdg);
+}
+
+WidgetController::~WidgetController() {
+
 }

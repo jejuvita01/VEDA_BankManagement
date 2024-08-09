@@ -32,6 +32,9 @@
 #ifndef person_h
 #define person_h
 
+#include <string>
+#include <vector>
+using namespace std;
 class Account;
 
 class Person {
@@ -45,7 +48,6 @@ public:
     void set_age(int);
     string get_name();
     int get_age();
-    virtual void show_all_account() = 0;
     virtual void make_deposit() = 0;
     virtual void make_saving() = 0;
     virtual void insert_deposit(int) = 0;
@@ -53,7 +55,6 @@ public:
     virtual void insert_deposit(int, time_t) = 0;
     virtual void insert_saving(int, int, time_t) = 0;
     virtual vector<Account*>& get_accounts() = 0;
-    virtual string who_is_this() = 0;
     virtual ~Person();
 };
 

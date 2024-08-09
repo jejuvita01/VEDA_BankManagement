@@ -1,8 +1,8 @@
 #ifndef WIDGETCONTROLLER_H
 #define WIDGETCONTROLLER_H
 
-class QMainWindow;
-class QWidget;
+#include <QMainWindow>
+#include <QWidget>
 class QObject;
 class loginwidget;
 
@@ -12,7 +12,7 @@ class WidgetController : public QMainWindow
 private:
     loginwidget* lgnwdg;
 public:
-    WidgetController();
+    WidgetController(QWidget* parent = nullptr);
     ~WidgetController();
 };
 
