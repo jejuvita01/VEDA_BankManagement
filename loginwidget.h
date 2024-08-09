@@ -1,19 +1,26 @@
 #ifndef LOGINWIDGET_H
 #define LOGINWIDGET_H
 
-#include <QObject>
 #include <QWidget>
+
+namespace Ui {
+class LoginWidget;
+}
 class QLineEdit;
 class QPushButton;
 
-class loginwidget : public QWidget
+class LoginWidget : public QWidget
 {
     Q_OBJECT
+
+public:
+    explicit LoginWidget(QWidget *parent = nullptr);
+    ~LoginWidget();
+
+private:
+    Ui::LoginWidget *ui;
     QLineEdit *id;
     QLineEdit *pwd;
-public:
-    loginwidget(QWidget *parent = nullptr);
-    ~loginwidget();
 };
 
 #endif // LOGINWIDGET_H
