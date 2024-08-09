@@ -1,4 +1,5 @@
 #include "loginwidget.h"
+#include "ui_loginwidget.h"
 #include <QLineEdit>
 #include <QPushButton>
 #include <QtWidgets>
@@ -6,9 +7,13 @@
 #include <map>
 #include "Person.h"
 
-loginwidget::loginwidget(QWidget *parent) // map; id: <pw,person>
+
+LoginWidget::LoginWidget(QWidget *parent)
     : QWidget(parent)
+    , ui(new Ui::LoginWidget)
 {
+    ui->setupUi(this);
+
     QStringList labels;
     labels << "&Id" << "&Pasword";
     id = new QLineEdit(this);
@@ -44,10 +49,7 @@ loginwidget::loginwidget(QWidget *parent) // map; id: <pw,person>
     });
 }
 
-// void loginwidget::setData(map<string, pair<string, Person*>> sys)
-// {
-//     this->sys = sys;
-// }
-
-
-loginwidget::~loginwidget() {}
+LoginWidget::~LoginWidget()
+{
+    delete ui;
+}
