@@ -6,6 +6,7 @@ ShowProducts::ShowProducts(QWidget *parent)
     , ui(new Ui::ShowProducts)
 {
     ui->setupUi(this);
+    connect(ui->backBtn, &QPushButton::clicked, this, &ShowProducts::switchToMainScreen);
 }
 
 ShowProducts::~ShowProducts()

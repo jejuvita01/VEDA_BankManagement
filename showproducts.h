@@ -17,6 +17,9 @@ public:
 
 private:
     Ui::ShowProducts *ui;
+
+signals:
+    void switchToMainScreen();
 };
 
 #endif // SHOWPRODUCTS_H
