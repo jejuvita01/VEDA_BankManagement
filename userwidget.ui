@@ -19,7 +19,7 @@
      <x>10</x>
      <y>10</y>
      <width>380</width>
-     <height>240</height>
+     <height>241</height>
     </rect>
    </property>
    <property name="currentIndex">
@@ -37,8 +37,8 @@
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>378</width>
-       <height>215</height>
+       <width>377</width>
+       <height>216</height>
       </rect>
      </property>
      <property name="sizePolicy">
@@ -56,17 +56,133 @@
      <property name="horizontalScrollMode">
       <enum>QAbstractItemView::ScrollMode::ScrollPerPixel</enum>
      </property>
+     <column>
+      <property name="text">
+       <string>계좌 종류</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>잔액</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>계좌 생성일</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>입금</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>출금</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>해지</string>
+      </property>
+     </column>
     </widget>
    </widget>
    <widget class="QWidget" name="makeAccount">
     <attribute name="title">
      <string>계좌 개설</string>
     </attribute>
-   </widget>
-   <widget class="QWidget" name="deleteAccount">
-    <attribute name="title">
-     <string>계좌 해지</string>
-    </attribute>
+    <widget class="QWidget" name="horizontalLayoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>371</width>
+       <height>211</height>
+      </rect>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,1">
+      <item>
+       <widget class="QGroupBox" name="accountGroupBox">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>100</width>
+          <height>200</height>
+         </size>
+        </property>
+        <property name="title">
+         <string>계좌 종류</string>
+        </property>
+        <widget class="QWidget" name="verticalLayoutWidget">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>20</y>
+           <width>101</width>
+           <height>191</height>
+          </rect>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0">
+          <property name="sizeConstraint">
+           <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
+          </property>
+          <property name="leftMargin">
+           <number>10</number>
+          </property>
+          <property name="topMargin">
+           <number>10</number>
+          </property>
+          <property name="rightMargin">
+           <number>10</number>
+          </property>
+          <property name="bottomMargin">
+           <number>10</number>
+          </property>
+          <item>
+           <widget class="QRadioButton" name="depositBtn">
+            <property name="text">
+             <string>보통 예금</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="savingBtn">
+            <property name="text">
+             <string>정기 예금</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="inputGroupBox">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>200</height>
+         </size>
+        </property>
+        <property name="title">
+         <string>정보 입력</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </widget>
   </widget>
   <widget class="QPushButton" name="logoutBtn">
