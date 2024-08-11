@@ -38,6 +38,7 @@ public slots:
 
 signals:
     void switchToMainScreen();
+    void signUpComplete(string id, string pw);
 };
 
 #endif // SIGNUPWIDGET_H

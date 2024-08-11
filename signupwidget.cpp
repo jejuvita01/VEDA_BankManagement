@@ -14,11 +14,15 @@ SignUpWidget::SignUpWidget(QWidget *parent)
     ui->pwdLineEdit->setTextMargins(4, 4, 4, 4);
     ui->pwdCheckLineEdit->setTextMargins(4, 4, 4, 4);
 
-    // 중복 체크 (중복 체크를 하기 위해선 data가 필요하다.)
     connect(ui->completeBtn, &QPushButton::clicked, this, &SignUpWidget::checkIdAndPw);
     connect(ui->idCheckBtn, &QPushButton::clicked, this, &SignUpWidget::checkId);
     connect(ui->idLineEdit, &QLineEdit::textChanged, this, [=]() { idCheck = false; });
     connect(ui->pwdCheckLineEdit, &QLineEdit::textChanged, this, &SignUpWidget::checkPwCheck);
+    connect(ui->backBtn, &QPushButton::clicked, this, [=]() {
+        ui->idLineEdit->setText(tr(""));
+        ui->pwdLineEdit->setText(tr(""));
+        emit switchToMainScreen();
+    });
 }
 
 SignUpWidget::~SignUpWidget()
@@ -51,7 +55,9 @@ void SignUpWidget::checkIdAndPw() {
         setMessageLabel(ui->idMessageLabel, tr("중복 체크 해주세요."), tr(""));
     }
     if (idCheck && pwCheck) {
-        emit switchToMainScreen();
+        // 아이디 중복체크, 비밀 번호 확인 완료
+        // controller에서 이 signal을 받으면 객체 생성
+        emit signUpComplete(ui->idLineEdit->text().toStdString(), ui->pwdLineEdit->text().toStdString());
     }
 }
 
