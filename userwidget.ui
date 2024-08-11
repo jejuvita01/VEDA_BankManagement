@@ -18,17 +18,45 @@
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>381</width>
-     <height>251</height>
+     <width>380</width>
+     <height>240</height>
     </rect>
    </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>0</number>
    </property>
    <widget class="QWidget" name="showAllAccount">
     <attribute name="title">
      <string>전체 계좌 조회</string>
     </attribute>
+    <widget class="QTableWidget" name="accountTableWidget">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>378</width>
+       <height>215</height>
+      </rect>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>1</horstretch>
+       <verstretch>1</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Shape::NoFrame</enum>
+     </property>
+     <property name="verticalScrollMode">
+      <enum>QAbstractItemView::ScrollMode::ScrollPerPixel</enum>
+     </property>
+     <property name="horizontalScrollMode">
+      <enum>QAbstractItemView::ScrollMode::ScrollPerPixel</enum>
+     </property>
+    </widget>
    </widget>
    <widget class="QWidget" name="makeAccount">
     <attribute name="title">
@@ -41,26 +69,26 @@
     </attribute>
    </widget>
   </widget>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="logoutBtn">
    <property name="geometry">
     <rect>
      <x>220</x>
-     <y>270</y>
+     <y>260</y>
      <width>80</width>
-     <height>18</height>
+     <height>30</height>
     </rect>
    </property>
    <property name="text">
     <string>로그 아웃</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_2">
+  <widget class="QPushButton" name="withdrawBtn">
    <property name="geometry">
     <rect>
      <x>310</x>
-     <y>270</y>
+     <y>260</y>
      <width>80</width>
-     <height>18</height>
+     <height>30</height>
     </rect>
    </property>
    <property name="text">
