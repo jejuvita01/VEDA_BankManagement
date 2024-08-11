@@ -1,8 +1,9 @@
-#include <iostream>
 #include <string>
 #include <ctime>
 
 using namespace std;
+
+#include "utility.h"
 
 string num_to_string_with_comma(int num) {
     string ret = "";
