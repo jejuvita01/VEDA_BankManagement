@@ -105,6 +105,18 @@ UserWidget::UserWidget(QWidget *parent)
                 savingBalanceSpinBox->setFocus();
         }
     });
+
+    connect(ui->logoutBtn, &QPushButton::clicked, this, [=]() {
+        qDebug() << "로그 아웃";
+        setPerson(nullptr);
+        emit switchToMainScreen();
+    });
+
+    connect(ui->withdrawBtn, &QPushButton::clicked, this, [=]() {
+        qDebug() << "회원 탈퇴";
+        setPerson(nullptr);
+        emit withdrawUser(this->id);
+    });
 }
 
 UserWidget::~UserWidget()
@@ -118,9 +130,15 @@ void UserWidget::setPerson(Person *person)
     refreshTable();
 }
 
+void UserWidget::setId(string id) {
+    this->id = id;
+}
+
 void UserWidget::refreshTable()
 {
     ui->accountTableWidget->reset();
+
+    if (person == nullptr) return;
 
     vector<Account*> accounts = person->get_accounts();
     QTableWidgetItem* item;

@@ -2,7 +2,8 @@
 #define USERWIDGET_H
 
 #include <QWidget>
-
+#include <string>
+using namespace std;
 namespace Ui {
 class UserWidget;
 }
@@ -24,11 +25,13 @@ public:
     ~UserWidget();
 
     void setPerson(Person* person);
+    void setId(string id);
     void refreshTable();
 
 private:
     Ui::UserWidget *ui;
 
+    string id;
     Person* person;
 
     QStackedLayout* stackedLayout;
@@ -43,6 +46,10 @@ private:
     QSpinBox* savingBalanceSpinBox;
     QSpinBox* savingDurationSpinBox;
     QPushButton* savingCompleteButton;
+
+signals:
+    void switchToMainScreen();
+    void withdrawUser(string id);
 };
 
 #endif // USERWIDGET_H
