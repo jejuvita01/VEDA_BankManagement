@@ -31,8 +31,8 @@ private:
     map<string, pair<string, Person*>> data;
 signals:
     void switchToMainScreen();
-    void switchToUserScreen();
-    void switchToManagerScreen();
+    void switchToUserScreen(string id, Person* person);
+    void switchToManagerScreen(string id, Person* person);
 
 public slots:
     void login();
