@@ -44,12 +44,14 @@ WidgetController::WidgetController(QWidget* parent)
     // 2. Main -> Login
     connect(mainwdg, &MainWidget::switchToLoginScreen, this, [=]() {
         mainwdg->hide();
+        lgnwdg->setData(data);
         lgnwdg->show();
     });
 
     // 3. Main -> SignUp
     connect(mainwdg, &MainWidget::switchToSignUpScreen, this, [=]() {
         mainwdg->hide();
+        // sgnupwdg->insertData(data);
         sgnupwdg->show();
     });
 
