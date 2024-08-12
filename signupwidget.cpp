@@ -1,7 +1,9 @@
 #include "signupwidget.h"
 #include "ui_signupwidget.h"
+#include "person.h"
 #include <QLineEdit>
 #include <QLabel>
+
 
 SignUpWidget::SignUpWidget(QWidget *parent)
     : QWidget(parent)
@@ -38,9 +40,9 @@ void SignUpWidget::setMessageLabel(QLabel* label, QString message, QString style
 
 // public 함수
 
-void SignUpWidget::insertData(vector<string> data) {
-    for (const auto& id : data) {
-        ids.push_back(QString::fromStdString(id));
+void SignUpWidget::insertData(map<string, pair<string, Person*>> data) {
+    for (const auto& datum : data) {
+        ids.push_back(QString::fromStdString(datum.first));
     }
 }
 

@@ -3,7 +3,6 @@
 
 #include <QWidget>
 
-#include <vector>
 #include <string>
 using namespace std;
 
@@ -12,6 +11,7 @@ class SignUpWidget;
 }
 
 class QLabel;
+class Person;
 
 class SignUpWidget : public QWidget
 {
@@ -20,7 +20,7 @@ class SignUpWidget : public QWidget
 public:
     explicit SignUpWidget(QWidget *parent = nullptr);
     ~SignUpWidget();
-    void insertData(vector<string> data);
+    void insertData(map<string, pair<string, Person*>> data);
 
 private:
     Ui::SignUpWidget *ui;
