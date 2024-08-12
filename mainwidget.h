@@ -3,8 +3,10 @@
 
 #include <QObject>
 #include <QWidget>
-#include <QPushButton>
-#include <QLabel>
+
+
+class QPushButton;
+class QLabel;
 
 namespace Ui {
     class MainWidget;
@@ -19,6 +21,12 @@ public:
     MainWidget(QWidget *parent = nullptr);
     Ui::MainWidget* getUi();
     ~MainWidget();
+
+signals:
+    void switchToLoginScreen();
+    void switchToSignUpScreen();
+    void switchToShowProductScreen();
+    void quit();
 };
 
 #endif // MAINWIDGET_H
