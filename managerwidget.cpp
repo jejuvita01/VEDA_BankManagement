@@ -47,6 +47,10 @@ void ManagerWidget::setPerson(Person* person) {
     this->person = person;
 }
 
+void ManagerWidget::setId(string id) {
+    this->id = id;
+}
+
 void ManagerWidget::refreshUserSearchTable(string searchId) {
     ui->userSearchTableWidget->reset();
 
