@@ -51,7 +51,7 @@ WidgetController::WidgetController(QWidget* parent)
     // 3. Main -> SignUp
     connect(mainwdg, &MainWidget::switchToSignUpScreen, this, [=]() {
         mainwdg->hide();
-        // sgnupwdg->insertData(data);
+        sgnupwdg->insertData(data);
         sgnupwdg->show();
     });
 
@@ -80,8 +80,8 @@ WidgetController::WidgetController(QWidget* parent)
 
     // 3. Login -> Manager
     connect(lgnwdg, &LoginWidget::switchToManagerScreen, this, [=](string id, Person* person) {
-        // mngwdg->setPerson(person);
-        // mngwdg->setId(id);
+        mngwdg->setPerson(person);
+        mngwdg->setId(id);
         lgnwdg->hide();
         mngwdg->show();
     });
@@ -119,8 +119,21 @@ WidgetController::WidgetController(QWidget* parent)
     });
 
 
+
     // Manager
 
+    // 1. Manager -> Main
+    connect(mngwdg, &ManagerWidget::switchTomainScreen, this, [=]() {
+        mngwdg->hide();
+        mainwdg->show();
+    });
+
+    // 2. Delete Manager, Manager -> Main
+    connect(mngwdg, &ManagerWidget::withdrawManager, this, [=](string id) {
+        data.erase(data.find(id));
+        mngwdg->hide();
+        mainwdg->show();
+    });
 
     // ShowProducts
 
