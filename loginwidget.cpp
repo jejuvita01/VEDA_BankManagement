@@ -52,10 +52,14 @@ void LoginWidget::login() {
     else {
         if (dynamic_cast<User*>(found->second.second)) {
             qDebug() << "유저입니다.";
+            ui->idLineEdit->setText(tr(""));
+            ui->pwLineEdit->setText(tr(""));
             emit switchToUserScreen(found->first, found->second.second);
         }
         else if (dynamic_cast<Manager*>(found->second.second)) {
             qDebug() << "매니저입니다.";
+            ui->idLineEdit->setText(tr(""));
+            ui->pwLineEdit->setText(tr(""));
             emit switchToManagerScreen(found->first, found->second.second);
         }
     }

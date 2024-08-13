@@ -32,6 +32,7 @@ ManagerWidget::ManagerWidget(QWidget *parent)
         setPerson(nullptr);
         emit withdrawManager(this->id);
     });
+    refreshUserSearchTable("");
 }
 
 ManagerWidget::~ManagerWidget()
@@ -57,9 +58,12 @@ void ManagerWidget::refreshUserSearchTable(string searchId) {
     int row = 0;
     QTableWidgetItem* item;
     for (const auto& datum : data) {
+        qDebug() << datum.first;
         if (dynamic_cast<Manager*>(datum.second.second)) continue;
         string userId = datum.first;
+        qDebug() << "유저" << userId;
         if (userId.find(searchId) == string::npos) continue;
+        qDebug() << "유저" << userId << searchId << "포함";
 
         User* user = dynamic_cast<User*>(datum.second.second);
         vector<Account*> userAccounts = user->get_accounts();
