@@ -18,6 +18,7 @@
 #include <QSpinBox>
 #include <QStackedLayout>
 #include <QLocale>
+#include <QInputDialog>
 
 UserWidget::UserWidget(QWidget *parent)
     : QWidget(parent)
@@ -77,8 +78,9 @@ UserWidget::UserWidget(QWidget *parent)
 
     connect(depositCompleteButton, &QPushButton::clicked, this, [=]() {
         // 일반 예금 계좌 개설 하기
-
-
+        int money = depositBalanceSpinBox->value();
+        person->make_deposit(money);
+        qDebug() << "보통 예금 개설";
         refreshTable();
         // 계좌 완료되면, 전체 계좌 조회로 화면 전환
         depositBalanceSpinBox->setValue(0);
@@ -88,7 +90,10 @@ UserWidget::UserWidget(QWidget *parent)
 
     connect(savingCompleteButton, &QPushButton::clicked, this, [=]() {
         // 정기 예금 계좌 개설 하기
-
+        int money = savingBalanceSpinBox->value();
+        int year = savingDurationSpinBox->value();
+        person->make_saving(money, year);
+        qDebug() << "정기 예금 개설";
         refreshTable();
         // 화면 전환
         savingBalanceSpinBox->setValue(0);
@@ -142,27 +147,75 @@ void UserWidget::refreshTable()
     if (person == nullptr) return;
 
     vector<Account*> accounts = person->get_accounts();
+
+    ui->accountTableWidget->setRowCount(accounts.size());
     QTableWidgetItem* item;
     QLocale locale = QLocale::system();
     for (int i = 0; i < accounts.size(); i++) {
         Account* account = accounts[i];
         if (dynamic_cast<Deposit*>(account)) {
             item = new QTableWidgetItem(tr("보통 예금"));
+            item->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+            item->setFlags(item->flags() & ~Qt::ItemIsEditable);
+            ui->accountTableWidget->setItem(i, 0, item);
+            item = new QTableWidgetItem(tr("X"));
+            item->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+            item->setFlags(item->flags() & ~Qt::ItemIsEditable);
+            ui->accountTableWidget->setItem(i, 2, item);
         }
         else if (dynamic_cast<Saving*>(account)) {
             item = new QTableWidgetItem(tr("정기 예금"));
+            item->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+            item->setFlags(item->flags() & ~Qt::ItemIsEditable);
+            ui->accountTableWidget->setItem(i, 0, item);
+            item = new QTableWidgetItem(QString::number(account->get_duration() / 12));
+            item->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+            item->setFlags(item->flags() & ~Qt::ItemIsEditable);
+            ui->accountTableWidget->setItem(i, 2, item);
         }
-        else {
-            item = new QTableWidgetItem(tr("알 수 없음"));
-        }
-
-        ui->accountTableWidget->setItem(i, 0, item);
-
         item = new QTableWidgetItem(locale.toString(account->get_balance()));
         item->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
+        item->setFlags(item->flags() & ~Qt::ItemIsEditable);
         ui->accountTableWidget->setItem(i, 1, item);
 
         item = new QTableWidgetItem(QString::fromStdString(make_time_string(account->get_start_date())));
-        ui->accountTableWidget->setItem(i, 2, item);
+        item->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+        item->setFlags(item->flags() & ~Qt::ItemIsEditable);
+        ui->accountTableWidget->setItem(i, 3, item);
+
+
+        QPushButton* button = new QPushButton(tr("입금"), ui->accountTableWidget);
+        connect(button, &QPushButton::clicked, this, [=](){
+            qDebug() << "입금 버튼";
+            bool ok;
+            int money = QInputDialog::getInt(this, tr("입금"), tr("입금하실 금액을 입력해주세요."), 0, 0, 2000000000, 1, &ok);
+            if (ok && money > 0) {
+                account->deposit(money);
+                qDebug() << "입금 완료";
+                refreshTable();
+            }
+        });
+        ui->accountTableWidget->setCellWidget(i, 4, button);
+
+        button = new QPushButton(tr("출금"), ui->accountTableWidget);
+        connect(button, &QPushButton::clicked, this, [=](){
+            qDebug() << "출금 버튼";
+            bool ok;
+            int money = QInputDialog::getInt(this, tr("출금"), tr("출금하실 금액을 입력해주세요."), 0, 0, account->get_balance(), 1, &ok);
+            if (ok && money > 0) {
+                account->withdraw(money);
+                qDebug() << "출금 완료";
+                refreshTable();
+            }
+        });
+        ui->accountTableWidget->setCellWidget(i, 5, button);
+
+        button = new QPushButton(tr("해지"), ui->accountTableWidget);
+        connect(button, &QPushButton::clicked, this, [=](){
+            qDebug() << "해지 버튼";
+            person->erase_account(i);
+            refreshTable();
+        });
+        ui->accountTableWidget->setCellWidget(i, 6, button);
     }
 }

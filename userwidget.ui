@@ -83,6 +83,11 @@
         </column>
         <column>
          <property name="text">
+          <string>기간(년)</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
           <string>계좌 생성일</string>
          </property>
         </column>
