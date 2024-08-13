@@ -111,7 +111,7 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>90</width>
+          <width>100</width>
           <height>216</height>
          </rect>
         </property>
@@ -127,9 +127,9 @@
        <widget class="QTableWidget" name="userAccountsTabelWidget">
         <property name="geometry">
          <rect>
-          <x>90</x>
+          <x>100</x>
           <y>0</y>
-          <width>285</width>
+          <width>275</width>
           <height>180</height>
          </rect>
         </property>

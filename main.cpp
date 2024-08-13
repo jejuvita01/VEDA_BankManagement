@@ -1,6 +1,8 @@
 #include "widgetcontroller.h"
 #include "loginwidget.h"
 #include "person.h"
+#include "user.h"
+#include "manager.h"
 
 #include <QApplication>
 #include <string>
@@ -85,6 +87,8 @@ string id, pw;
 
 int main(int argc, char *argv[])
 {
+    sys.insert({"sungmin", {"990819", new User("박성민", 24)}});
+    sys.insert({"manager", {"000000", new Manager("매니저", 40)}});
     //init_data();
     //save_data();
 
@@ -93,6 +97,7 @@ int main(int argc, char *argv[])
     // w.show();
 
     WidgetController *wdgctrl = new WidgetController();
+    wdgctrl->set_data(sys);
     wdgctrl->show();
 
     return a.exec();

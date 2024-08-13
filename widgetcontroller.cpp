@@ -80,6 +80,7 @@ WidgetController::WidgetController(QWidget* parent)
 
     // 3. Login -> Manager
     connect(lgnwdg, &LoginWidget::switchToManagerScreen, this, [=](string id, Person* person) {
+        mngwdg->setData(data);
         mngwdg->setPerson(person);
         mngwdg->setId(id);
         lgnwdg->hide();
