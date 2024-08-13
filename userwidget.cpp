@@ -17,6 +17,7 @@
 #include <QLabel>
 #include <QSpinBox>
 #include <QStackedLayout>
+#include <QLocale>
 
 UserWidget::UserWidget(QWidget *parent)
     : QWidget(parent)
@@ -28,7 +29,7 @@ UserWidget::UserWidget(QWidget *parent)
 
     stackedLayout = new QStackedLayout(this);
     ui->inputGroupBox->setLayout(stackedLayout);
-
+    // 보통 예금 개설 위젯
     depositWidget = new QWidget(this);
     depositLayout = new QFormLayout(this);
     depositBalanceSpinBox = new QSpinBox(this);
@@ -41,7 +42,7 @@ UserWidget::UserWidget(QWidget *parent)
     depositLayout->addRow(new QLabel("금액"), depositBalanceSpinBox);
     depositLayout->addRow(new QLabel(""), depositCompleteButton);
     depositWidget->setLayout(depositLayout);
-
+    // 정기 예금 개설 위젯
     savingWidget = new QWidget(this);
     savingLayout = new QFormLayout(this);
     savingBalanceSpinBox = new QSpinBox(this);
@@ -62,7 +63,7 @@ UserWidget::UserWidget(QWidget *parent)
 
     stackedLayout->insertWidget(0, depositWidget);
     stackedLayout->insertWidget(1, savingWidget);
-
+    // 화면 전환 시 focus 변환
     ui->tabWidget->setCurrentIndex(0);
     connect(ui->depositBtn, &QRadioButton::clicked, this, [=]() {
         stackedLayout->setCurrentIndex(0);
@@ -142,17 +143,23 @@ void UserWidget::refreshTable()
 
     vector<Account*> accounts = person->get_accounts();
     QTableWidgetItem* item;
+    QLocale locale = QLocale::system();
     for (int i = 0; i < accounts.size(); i++) {
         Account* account = accounts[i];
         if (dynamic_cast<Deposit*>(account)) {
             item = new QTableWidgetItem(tr("보통 예금"));
         }
-        if (dynamic_cast<Saving*>(account)) {
+        else if (dynamic_cast<Saving*>(account)) {
             item = new QTableWidgetItem(tr("정기 예금"));
         }
+        else {
+            item = new QTableWidgetItem(tr("알 수 없음"));
+        }
+
         ui->accountTableWidget->setItem(i, 0, item);
 
-        item = new QTableWidgetItem(QString::fromStdString(num_to_string_with_comma(account->get_balance())));
+        item = new QTableWidgetItem(locale.toString(account->get_balance()));
+        item->setTextAlignment(Qt::AlignRight | Qt::AlignVCenter);
         ui->accountTableWidget->setItem(i, 1, item);
 
         item = new QTableWidgetItem(QString::fromStdString(make_time_string(account->get_start_date())));
