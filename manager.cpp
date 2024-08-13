@@ -23,12 +23,12 @@ Manager::Manager(string name, int age) : Person(name, age)
 }
 
 
-void Manager::make_deposit()
+void Manager::make_deposit(int money)
 {
     return;
 }
 
-void Manager::make_saving()
+void Manager::make_saving(int money, int year)
 {
     return;
 }
@@ -44,10 +44,13 @@ void Manager::insert_deposit(int money, time_t s) {
 void Manager::insert_saving(int money, int duratin, time_t s) {
     return ;
 }
-vector<Account*>& Manager::get_accounts()
+void Manager::erase_account(int idx) {
+    return;
+}
+vector<Account*> Manager::get_accounts()
 {
-    vector<Account*> v;
-    return v;
+    vector<Account*>* v = new vector<Account*>();
+    return *v;
 }
 
 Manager::~Manager()

@@ -14,13 +14,14 @@ class Manager : public Person {
 public:
     Manager();
     Manager(string name, int age);
-    virtual void make_deposit();
-    virtual void make_saving();
+    virtual void make_deposit(int);
+    virtual void make_saving(int, int);
     virtual void insert_deposit(int);
     virtual void insert_saving(int, int);
     virtual void insert_deposit(int, time_t);
     virtual void insert_saving(int, int, time_t);
-    virtual vector<Account*>& get_accounts();
+    virtual void erase_account(int);
+    virtual vector<Account*> get_accounts();
     virtual ~Manager();
 };
 

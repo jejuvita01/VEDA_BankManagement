@@ -48,13 +48,14 @@ public:
     void set_age(int);
     string get_name();
     int get_age();
-    virtual void make_deposit() = 0;
-    virtual void make_saving() = 0;
+    virtual void make_deposit(int) = 0;
+    virtual void make_saving(int, int) = 0;
     virtual void insert_deposit(int) = 0;
     virtual void insert_saving(int, int) = 0;
     virtual void insert_deposit(int, time_t) = 0;
     virtual void insert_saving(int, int, time_t) = 0;
-    virtual vector<Account*>& get_accounts() = 0;
+    virtual void erase_account(int) = 0;
+    virtual vector<Account*> get_accounts() = 0;
     virtual ~Person();
 };
 
