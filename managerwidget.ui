@@ -53,6 +53,15 @@
           <height>196</height>
          </rect>
         </property>
+        <property name="frameShape">
+         <enum>QFrame::Shape::NoFrame</enum>
+        </property>
+        <property name="verticalScrollMode">
+         <enum>QAbstractItemView::ScrollMode::ScrollPerPixel</enum>
+        </property>
+        <property name="horizontalScrollMode">
+         <enum>QAbstractItemView::ScrollMode::ScrollPerPixel</enum>
+        </property>
         <column>
          <property name="text">
           <string>사용자 아이디</string>
@@ -82,11 +91,14 @@
        <widget class="QLineEdit" name="userSearchlineEdit">
         <property name="geometry">
          <rect>
-          <x>260</x>
+          <x>2</x>
           <y>0</y>
-          <width>113</width>
+          <width>371</width>
           <height>20</height>
          </rect>
+        </property>
+        <property name="placeholderText">
+         <string>검색</string>
         </property>
        </widget>
       </widget>
@@ -99,9 +111,12 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>81</width>
+          <width>90</width>
           <height>216</height>
          </rect>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Shape::NoFrame</enum>
         </property>
         <column>
          <property name="text">
@@ -114,9 +129,12 @@
          <rect>
           <x>90</x>
           <y>0</y>
-          <width>281</width>
-          <height>181</height>
+          <width>285</width>
+          <height>180</height>
          </rect>
+        </property>
+        <property name="frameShape">
+         <enum>QFrame::Shape::NoFrame</enum>
         </property>
         <property name="verticalScrollMode">
          <enum>QAbstractItemView::ScrollMode::ScrollPerPixel</enum>
@@ -149,7 +167,7 @@
         <property name="geometry">
          <rect>
           <x>270</x>
-          <y>190</y>
+          <y>180</y>
           <width>100</width>
           <height>30</height>
          </rect>
