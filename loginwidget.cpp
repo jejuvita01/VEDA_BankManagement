@@ -1,53 +1,68 @@
 #include "loginwidget.h"
+#include "ui_loginwidget.h"
+#include "person.h"
+#include "user.h"
+#include "manager.h"
 #include <QLineEdit>
 #include <QPushButton>
-#include <QtWidgets>
 #include <QApplication>
-#include <map>
-#include "Person.h"
 
-loginwidget::loginwidget(QWidget *parent) // map; id: <pw,person>
+LoginWidget::LoginWidget(QWidget *parent)
     : QWidget(parent)
+    , ui(new Ui::LoginWidget)
 {
-    QStringList labels;
-    labels << "&Id" << "&Pasword";
-    id = new QLineEdit(this);
-    pwd = new QLineEdit(this);
-    QFormLayout *formLayout = new QFormLayout;
-    pwd->setEchoMode(QLineEdit::Password);
-    formLayout->addRow(labels.at(0), id);
-    formLayout->addRow(labels.at(1), pwd);
+    ui->setupUi(this);
+    ui->idLineEdit->setTextMargins(4, 4, 4, 4);
+    ui->pwLineEdit->setTextMargins(4, 4, 4, 4);
 
-    QPushButton *lgnBtn = new QPushButton("login");
-    lgnBtn->setCheckable(true);
-    // lgnBtn->show();
-    // connect(lgnBtn, &QPushButton::clicked, [=]() {
-    //     if (sys.find(id) != sys.end() && sys.find(id) == pw) {
-    //         if (dynamic_cast<User*>(sys.find(id).second.second)) {
-
-    //         }
-    //     }
-    // });
-
-    formLayout->addRow("", lgnBtn);
-
-    QGroupBox *groupBox = new QGroupBox("&Sign in", this);
-    groupBox->move(5, 5);
-    groupBox->setLayout(formLayout);
-
-    resize(groupBox->sizeHint().width() + 10, groupBox->sizeHint().height() + 10);
-
-    connect(id, &QLineEdit::editingFinished, [&]() { qDebug() << "id changed " << id->text(); });
-    connect(pwd, &QLineEdit::textChanged, [&](const QString &text) {
-        //qDebug() << "pwd changed " << text;
-        //qDebug() << id->text();
+    connect(ui->backBtn, &QPushButton::clicked, this, [=]() {
+        ui->idLineEdit->setText(tr(""));
+        ui->pwLineEdit->setText(tr(""));
+        ui->messageLabel->setText("");
+        emit switchToMainScreen();
     });
+
+    connect(ui->loginBtn, &QPushButton::clicked, this, &LoginWidget::login);
+    connect(ui->idLineEdit, &QLineEdit::returnPressed, this, &LoginWidget::login);
+    connect(ui->pwLineEdit, &QLineEdit::returnPressed, this, &LoginWidget::login);
 }
 
-// void loginwidget::setData(map<string, pair<string, Person*>> sys)
-// {
-//     this->sys = sys;
-// }
+LoginWidget::~LoginWidget()
+{
+    delete ui;
+}
 
+// public 함수
+void LoginWidget::setData(map<string, pair<string, Person*>> d) {
+    this->data = d;
+}
 
-loginwidget::~loginwidget() {}
+// slot 함수
+void LoginWidget::login() {
+    auto found = data.find(ui->idLineEdit->text().toStdString());
+    string pwInput = ui->pwLineEdit->text().toStdString();
+    if (pwInput.empty()) {
+        ui->messageLabel->setText("비밀 번호를 입력해주세요.");
+        ui->messageLabel->setStyleSheet(tr("QLabel { color : red; }"));
+        return;
+    }
+    if (found == data.end() || found->second.first != pwInput) {
+        ui->messageLabel->setText("아이디와 비밀 번호를 찾을 수 없습니다.");
+        ui->messageLabel->setStyleSheet(tr("QLabel { color : red; }"));
+        return;
+    }
+    else {
+        if (dynamic_cast<User*>(found->second.second)) {
+            ui->idLineEdit->setText(tr(""));
+            ui->pwLineEdit->setText(tr(""));
+            emit switchToUserScreen(found->first, found->second.second);
+            ui->messageLabel->setText("");
+        }
+        else if (dynamic_cast<Manager*>(found->second.second)) {
+            ui->idLineEdit->setText(tr(""));
+            ui->pwLineEdit->setText(tr(""));
+            emit switchToManagerScreen(found->first, found->second.second);
+            ui->messageLabel->setText("");
+        }
+    }
+}

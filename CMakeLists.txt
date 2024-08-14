@@ -23,19 +23,25 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(bank_manage
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
+        account.h account.cpp
+        deposit.h deposit.cpp
+        saving.h saving.cpp
+        person.h person.cpp
+        user.h user.cpp
+        manager.h manager.cpp
+
+        mainwidget.h mainwidget.cpp mainwidget.ui
+        loginwidget.h loginwidget.cpp loginwidget.ui
         signupwidget.h signupwidget.cpp signupwidget.ui
-        account.cpp
-        account.h deposit.cpp deposit.h loginwidget.cpp loginwidget.h loginwidget.ui manager.cpp manager.h person.cpp person.h saving.cpp saving.h user.cpp user.h utility.cpp utility.h
-        widgetcontroller.cpp widgetcontroller.h
+        showproducts.h showproducts.cpp showproducts.ui
+        userwidget.h userwidget.cpp userwidget.ui
+        managerwidget.h managerwidget.cpp managerwidget.ui
 
+        widgetcontroller.h widgetcontroller.cpp
 
+        utility.h utility.cpp
 
-
-
-
-
-
-
+        main.cpp
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET bank_manage APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

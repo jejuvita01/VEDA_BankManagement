@@ -8,14 +8,12 @@
 #include "deposit.h"
 #include "saving.h"
 
-#include <iostream>
 #include <string>
 #include <vector>
 
 using namespace std;
 
 #include "user.h"
-class Deposit;
 
 User::User() : Person()
 {
@@ -26,18 +24,13 @@ User::User(string name, int age) : Person(name, age)
 {
 }
 
-void User::make_deposit()
+void User::make_deposit(int money)
 {
-    int money;
-    cin >> money;
     insert_deposit(money);
 }
 
-void User::make_saving()
+void User::make_saving(int money, int year)
 {
-    int money, year;
-    cin >> money;
-    cin >> year;
     insert_saving(money, year * 12);
 }
 void User::insert_deposit(int money) {
@@ -55,9 +48,10 @@ void User::insert_deposit(int money, time_t s) {
 void User::insert_saving(int money, int duration, time_t s) {
     this->accounts.push_back(new Saving(money, duration, s));
 }
-
-
-vector<Account*>& User::get_accounts()
+void User::erase_account(int idx) {
+    this->accounts.erase(accounts.begin() + idx);
+}
+vector<Account*> User::get_accounts()
 {
     return this->accounts;
 }

@@ -2,6 +2,8 @@
 #define account_h
 
 #include <ctime>
+
+#define MAX_BALANCE 100000000
 using namespace std;
 class Account {
 protected:

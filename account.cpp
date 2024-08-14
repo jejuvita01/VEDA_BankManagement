@@ -13,6 +13,9 @@ Account::Account(int money, time_t s) {
 Account::~Account() {
 }
 bool Account::deposit(int money) {
+    if (this->balance + money > MAX_BALANCE) {
+        return false;
+    }
     this->balance += money;
     return true;
 }
@@ -22,16 +25,6 @@ bool Account::withdraw(int money) {
     }
     this->balance -= money;
     return true;
-    // try
-    // {
-    //   if (this->balance < money) throw new exception("잔액 부족");
-    //   this->balance -= money;
-    //   qDebug() << money << "원 출금 완료" << endl;
-    // }
-    // catch(const std::exception& e)
-    // {
-    //   std::cerr << e.what() << '\n';
-    // }
 }
 time_t Account::get_start_date() {
     return this->startDate;

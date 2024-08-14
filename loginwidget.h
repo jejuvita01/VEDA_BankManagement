@@ -1,19 +1,41 @@
 #ifndef LOGINWIDGET_H
 #define LOGINWIDGET_H
+#include <map>
+#include <string>
 
-#include <QObject>
+using namespace std;
 #include <QWidget>
+
+
+namespace Ui {
+class LoginWidget;
+}
 class QLineEdit;
 class QPushButton;
+class Person;
+class User;
+class Manager;
 
-class loginwidget : public QWidget
+class LoginWidget : public QWidget
 {
     Q_OBJECT
-    QLineEdit *id;
-    QLineEdit *pwd;
+
 public:
-    loginwidget(QWidget *parent = nullptr);
-    ~loginwidget();
+    explicit LoginWidget(QWidget *parent = nullptr);
+    ~LoginWidget();
+
+    void setData(map<string, pair<string, Person*>> d);
+
+private:
+    Ui::LoginWidget *ui;
+    map<string, pair<string, Person*>> data;
+signals:
+    void switchToMainScreen();
+    void switchToUserScreen(string id, Person* person);
+    void switchToManagerScreen(string id, Person* person);
+
+public slots:
+    void login();
 };
 
 #endif // LOGINWIDGET_H
