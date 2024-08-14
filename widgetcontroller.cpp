@@ -172,7 +172,6 @@ void WidgetController::set_data(map<string, pair<string, Person*>> data)
 
 void WidgetController::init_data()
 {
-    // qDebug() << "... 초기 데이터 입력중 ... \n";
     ifstream fin;
     fin.open(PATH);
 
@@ -180,9 +179,7 @@ void WidgetController::init_data()
     for (int i = 0; i < N; i++) {
         string id, pw, person_type; fin >> person_type >> id >> pw;
         string name; int age; fin >> name >> age;
-        qDebug() << person_type << ' ' << id << ' ' << pw;
         if (person_type == "User") {
-            qDebug() << "USER" << person_type << ' ' << id << ' ' << pw;
             data.insert(make_pair(id, make_pair(pw, new User(name, age))));
             int account_N; fin >> account_N;
             Person* tmp = data[id].second;
@@ -199,11 +196,9 @@ void WidgetController::init_data()
             }
         }
         else if (person_type == "Manager") {
-            qDebug() << "MANAGER" << person_type << ' ' << id << ' ' << pw;
             data.insert(make_pair(id, make_pair(pw, new Manager(name, age))));
         }
     }
-    // qDebug() << "\n\n";
     fin.close();
 }
 
@@ -219,7 +214,6 @@ void WidgetController::save_data()
             type = "User";
         else if (dynamic_cast<Manager*>(person.second.second))
             type = "Manager";
-        qDebug() << type << person.first << person.second.first;
         fout << type << " " << person.first << " " << person.second.first << " " << endl;
         fout << person.second.second->get_name() << " " << person.second.second->get_age() << endl;
         if (type == "User") {

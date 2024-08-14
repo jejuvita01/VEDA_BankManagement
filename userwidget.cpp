@@ -34,6 +34,7 @@ UserWidget::UserWidget(QWidget *parent)
     depositWidget = new QWidget(this);
     depositLayout = new QFormLayout(this);
     depositBalanceSpinBox = new QSpinBox(this);
+    depositBalanceSpinBox->setStyleSheet("QSpinBox {padding: 4px 4px 4px 4px}");
     depositBalanceSpinBox->setRange(0, 1000000000);
     depositBalanceSpinBox->setGroupSeparatorShown(true);
     depositBalanceSpinBox->selectAll();
@@ -47,12 +48,14 @@ UserWidget::UserWidget(QWidget *parent)
     savingWidget = new QWidget(this);
     savingLayout = new QFormLayout(this);
     savingBalanceSpinBox = new QSpinBox(this);
+    savingBalanceSpinBox->setStyleSheet("QSpinBox {padding: 4px 4px 4px 4px}");
     savingBalanceSpinBox->setRange(0, 1000000000);
     savingBalanceSpinBox->setGroupSeparatorShown(true);
     savingBalanceSpinBox->selectAll();
     savingBalanceSpinBox->setSingleStep(10000);
     savingBalanceSpinBox->setSuffix(tr("원"));
     savingDurationSpinBox = new QSpinBox(this);
+    savingDurationSpinBox->setStyleSheet("QSpinBox {padding: 4px 4px 4px 4px}");
     savingDurationSpinBox->setRange(1, 5);
     savingDurationSpinBox->setSingleStep(1);
     savingDurationSpinBox->setSuffix(tr("년"));
@@ -80,7 +83,6 @@ UserWidget::UserWidget(QWidget *parent)
         // 일반 예금 계좌 개설 하기
         int money = depositBalanceSpinBox->value();
         person->make_deposit(money);
-        qDebug() << "보통 예금 개설";
         refreshTable();
         // 계좌 완료되면, 전체 계좌 조회로 화면 전환
         depositBalanceSpinBox->setValue(0);
@@ -93,7 +95,6 @@ UserWidget::UserWidget(QWidget *parent)
         int money = savingBalanceSpinBox->value();
         int year = savingDurationSpinBox->value();
         person->make_saving(money, year);
-        qDebug() << "정기 예금 개설";
         refreshTable();
         // 화면 전환
         savingBalanceSpinBox->setValue(0);
@@ -113,13 +114,11 @@ UserWidget::UserWidget(QWidget *parent)
     });
 
     connect(ui->logoutBtn, &QPushButton::clicked, this, [=]() {
-        qDebug() << "로그 아웃";
         setPerson(nullptr);
         emit switchToMainScreen();
     });
 
     connect(ui->withdrawBtn, &QPushButton::clicked, this, [=]() {
-        qDebug() << "회원 탈퇴";
         setPerson(nullptr);
         emit withdrawUser(this->id);
     });
@@ -186,12 +185,10 @@ void UserWidget::refreshTable()
 
         QPushButton* button = new QPushButton(tr("입금"), ui->accountTableWidget);
         connect(button, &QPushButton::clicked, this, [=](){
-            qDebug() << "입금 버튼";
             bool ok;
             int money = QInputDialog::getInt(this, tr("입금"), tr("입금하실 금액을 입력해주세요."), 0, 0, MAX_BALANCE - account->get_balance(), 1, &ok);
             if (ok && money > 0) {
                 account->deposit(money);
-                qDebug() << "입금 완료";
                 refreshTable();
             }
         });
@@ -199,12 +196,10 @@ void UserWidget::refreshTable()
 
         button = new QPushButton(tr("출금"), ui->accountTableWidget);
         connect(button, &QPushButton::clicked, this, [=](){
-            qDebug() << "출금 버튼";
             bool ok;
             int money = QInputDialog::getInt(this, tr("출금"), tr("출금하실 금액을 입력해주세요."), 0, 0, account->get_balance(), 1, &ok);
             if (ok && money > 0) {
                 account->withdraw(money);
-                qDebug() << "출금 완료";
                 refreshTable();
             }
         });
@@ -212,7 +207,6 @@ void UserWidget::refreshTable()
 
         button = new QPushButton(tr("해지"), ui->accountTableWidget);
         connect(button, &QPushButton::clicked, this, [=](){
-            qDebug() << "해지 버튼";
             person->erase_account(i);
             refreshTable();
         });

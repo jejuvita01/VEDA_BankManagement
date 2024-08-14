@@ -51,7 +51,6 @@ void SignUpWidget::insertData(map<string, pair<string, Person*>> data) {
 
 // SLOT 함수
 void SignUpWidget::checkIdAndPw() {
-    qDebug() << "완료 버튼" << "아이디 비번 체크";
     if (ui->idLineEdit->text().length() == 0) {
         setMessageLabel(ui->idMessageLabel, tr("아이디를 입력해주세요"), tr(""));
         return;
@@ -89,7 +88,6 @@ void SignUpWidget::checkPwCheck(const QString& text) {
 
 void SignUpWidget::checkId() {
     // 아이디 중복 체크
-    qDebug() << "아이디 중복 체크";
     QString idInput = ui->idLineEdit->text();
     if (idInput.length() < 4) {
         setMessageLabel(ui->idMessageLabel, tr("아이디는 최소 4자 이상입니다."), tr("QLabel { color : red; }"));

@@ -23,19 +23,16 @@ ManagerWidget::ManagerWidget(QWidget *parent)
     });
 
     connect(ui->logoutBtn, &QPushButton::clicked, this, [=]() {
-        qDebug() << "로그 아웃";
         setPerson(nullptr);
         emit switchTomainScreen();
     });
 
     connect(ui->withdrawBtn, &QPushButton::clicked, this, [=]() {
-        qDebug() << "매니저 탈퇴";
         setPerson(nullptr);
         emit withdrawManager(this->id);
     });
 
     connect(ui->userDeleteButton, &QPushButton::clicked, this, [=]() {
-        qDebug() << "유저 삭제";
         string del_id;
         int c, r;
         c = ui->userIdTableWidget->currentColumn();
@@ -88,7 +85,6 @@ void ManagerWidget::refreshUserSearchTable(string searchId) {
         }
     }
 
-    qDebug() << "CNT: " << cnt;
 
     ui->userSearchTableWidget->setRowCount(cnt);
 
@@ -96,12 +92,9 @@ void ManagerWidget::refreshUserSearchTable(string searchId) {
     QTableWidgetItem* item;
     QLocale locale = QLocale::system();
     for (const auto& datum : data) {
-        qDebug() << datum.first;
         if (dynamic_cast<Manager*>(datum.second.second)) continue;
         string userId = datum.first;
-        qDebug() << "유저" << userId;
         if (userId.find(searchId) == string::npos) continue;
-        qDebug() << "유저" << userId << searchId << "포함";
 
         User* user = dynamic_cast<User*>(datum.second.second);
         vector<Account*> userAccounts = user->get_accounts();
@@ -164,7 +157,6 @@ void ManagerWidget::refreshUserDeleteTable() {
     int row = 0;
     QTableWidgetItem* item;
     for (const auto& datum : data) {
-        qDebug() << datum.first;
         if (dynamic_cast<Manager*>(datum.second.second)) continue;
 
         item = new QTableWidgetItem(QString::fromStdString(datum.first));
