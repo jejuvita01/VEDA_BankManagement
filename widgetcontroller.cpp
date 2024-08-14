@@ -11,8 +11,13 @@
 #include <QApplication>
 #include <map>
 #include <string>
+#include <fstream>
 #include "Person.h"
 #include "user.h"
+#include "manager.h"
+#include "account.h"
+#include "deposit.h"
+#include "saving.h"
 
 using namespace std;
 
@@ -39,7 +44,10 @@ WidgetController::WidgetController(QWidget* parent)
     // MainWidget
 
     // 1. Main -> Quit
-    connect(mainwdg, &MainWidget::quit, qApp, &QApplication::quit);
+    connect(mainwdg, &MainWidget::quit, qApp, [=]() {
+        save_data();
+        qApp->quit();
+    });
 
     // 2. Main -> Login
     connect(mainwdg, &MainWidget::switchToLoginScreen, this, [=]() {
@@ -80,7 +88,6 @@ WidgetController::WidgetController(QWidget* parent)
 
     // 3. Login -> Manager
     connect(lgnwdg, &LoginWidget::switchToManagerScreen, this, [=](string id, Person* person) {
-        mngwdg->setData(data);
         mngwdg->setPerson(person);
         mngwdg->setId(id);
         lgnwdg->hide();
@@ -125,6 +132,7 @@ WidgetController::WidgetController(QWidget* parent)
 
     // 1. Manager -> Main
     connect(mngwdg, &ManagerWidget::switchTomainScreen, this, [=]() {
+        mngwdg->setData(data);
         mngwdg->hide();
         mainwdg->show();
     });
@@ -143,11 +151,84 @@ WidgetController::WidgetController(QWidget* parent)
         showwdg->hide();
         mainwdg->show();
     });
+
+    init_data();
 }
 
 void WidgetController::set_data(map<string, pair<string, Person*>> data)
 {
     this->data = data;
+}
+
+void WidgetController::init_data()
+{
+    // qDebug() << "... 초기 데이터 입력중 ... \n";
+    ifstream fin;
+    fin.open(PATH);
+
+    int N; fin >> N;
+    for (int i = 0; i < N; i++) {
+        string id, pw, person_type; fin >> person_type >> id >> pw;
+        string name; int age; fin >> name >> age;
+        qDebug() << person_type << ' ' << id << ' ' << pw;
+        if (person_type == "User") {
+            qDebug() << "USER" << person_type << ' ' << id << ' ' << pw;
+            data.insert(make_pair(id, make_pair(pw, new User(name, age))));
+            int account_N; fin >> account_N;
+            Person* tmp = data[id].second;
+            for (int j = 0; j < account_N; j++) {
+                string account_type; int s; int balance;
+                fin >> account_type >> s >> balance;
+                if (account_type == "Deposit") {
+                    tmp->insert_deposit(balance, s);
+                }
+                else if (account_type == "Saving") {
+                    int duration; fin >> duration;
+                    tmp->insert_saving(balance, duration, s);
+                }
+            }
+        }
+        else if (person_type == "Manager") {
+            qDebug() << "MANAGER" << person_type << ' ' << id << ' ' << pw;
+            data.insert(make_pair(id, make_pair(pw, new Manager(name, age))));
+        }
+    }
+    // qDebug() << "\n\n";
+    fin.close();
+}
+
+void WidgetController::save_data()
+{
+    qDebug() << "불러졌니?";
+    ofstream fout;
+    fout.open(PATH);
+
+    fout << data.size() << endl;
+    for (const auto& person : data) {
+        string type;
+        if (dynamic_cast<User*>(person.second.second))
+            type = "User";
+        else if (dynamic_cast<Manager*>(person.second.second))
+            type = "Manager";
+        fout << type << " " << person.first << " " << person.second.first << " " << endl;
+        fout << person.second.second->get_name() << " " << person.second.second->get_age() << endl;
+        if (type == "User") {
+            const auto& accounts = person.second.second->get_accounts();
+            fout << accounts.size() << endl;
+            for (const auto& account : accounts) {
+                string account_type;
+                if (dynamic_cast<Deposit*>(account))
+                    account_type = "Deposit";
+                else if (dynamic_cast<Saving*>(account))
+                    account_type = "Saving";
+                fout << account_type << " " << account->get_start_date() << " " << account->get_balance() << " ";
+                if (account_type == "Saving") fout << account->get_duration() << endl;
+                else fout << endl;
+            }
+        }
+
+    }
+    fout.close();
 }
 
 WidgetController::~WidgetController() {}

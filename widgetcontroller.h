@@ -15,6 +15,8 @@ class ManagerWidget;
 class ShowProducts;
 class Person;
 
+#define PATH "person_data.txt"
+
 class WidgetController : public QMainWindow
 {
     Q_OBJECT
@@ -29,6 +31,8 @@ private:
 public:
     WidgetController(QWidget* parent = nullptr);
     void set_data(map<string, pair<string, Person*>> data);
+    void init_data();
+    void save_data();
     ~WidgetController();
 };
 #endif // WIDGETCONTROLLER_H
