@@ -15,7 +15,7 @@ class ManagerWidget;
 class ShowProducts;
 class Person;
 
-#define PATH "person_data.txt"
+#define PATH "./../../person_data.txt"
 
 class WidgetController : public QMainWindow
 {

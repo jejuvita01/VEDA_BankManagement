@@ -32,6 +32,23 @@ ManagerWidget::ManagerWidget(QWidget *parent)
         setPerson(nullptr);
         emit withdrawManager(this->id);
     });
+
+    connect(ui->userDeleteButton, &QPushButton::clicked, this, [=]() {
+        qDebug() << "유저 삭제";
+        string del_id;
+        int c, r;
+        c = ui->userIdTableWidget->currentColumn();
+        r = ui->userIdTableWidget->currentRow();
+        del_id = (ui->userIdTableWidget->takeItem(r, c)->text().toStdString());
+        emit withdrawUser(del_id);
+        refreshUserDeleteTable();
+        refreshUserSearchTable(string(""));
+        ui->userAccountsTabelWidget->setRowCount(0);
+        ui->userAccountsTabelWidget->clearSelection();
+        ui->userAccountsTabelWidget->reset();
+        ui->userAccountsTabelWidget->clear();
+
+    });
     refreshUserSearchTable("");
 }
 
@@ -42,6 +59,8 @@ ManagerWidget::~ManagerWidget()
 
 void ManagerWidget::setData(map<string, pair<string, Person*>> d) {
     this->data = d;
+    refreshUserSearchTable(string(""));
+    refreshUserDeleteTable();
 }
 
 void ManagerWidget::setPerson(Person* person) {
@@ -54,6 +73,25 @@ void ManagerWidget::setId(string id) {
 
 void ManagerWidget::refreshUserSearchTable(string searchId) {
     ui->userSearchTableWidget->reset();
+
+    int cnt = 0;
+    for (const auto& d: data) {
+        if (dynamic_cast<Manager*>(d.second.second))
+            continue;
+        if (d.first.find(searchId) != string::npos) {
+            User* u = dynamic_cast<User*>(d.second.second);
+            if (u == nullptr)
+                continue;
+            else {
+            for (const auto& a: u->get_accounts())
+                cnt++;
+            }
+        }
+    }
+
+    qDebug() << "CNT: " << cnt;
+
+    ui->userSearchTableWidget->setRowCount(cnt);
 
     int row = 0;
     QTableWidgetItem* item;
@@ -97,15 +135,31 @@ void ManagerWidget::refreshUserSearchTable(string searchId) {
 
 void ManagerWidget::refreshUserDeleteTable() {
     ui->userIdTableWidget->reset();
+
+    int cnt = 0;
+    for (const auto& d: data) {
+        if (dynamic_cast<Manager*>(d.second.second))
+            continue;
+        else
+            cnt++;
+    }
+
+    ui->userIdTableWidget->setRowCount(cnt);
+
     int row = 0;
     QTableWidgetItem* item;
     for (const auto& datum : data) {
+        qDebug() << datum.first;
         if (dynamic_cast<Manager*>(datum.second.second)) continue;
 
         item = new QTableWidgetItem(QString::fromStdString(datum.first));
         ui->userIdTableWidget->setItem(row++, 0, item);
         connect(ui->userIdTableWidget, &QTableWidget::itemClicked, this, &ManagerWidget::refreshUserAccountsTable);
     }
+    ui->userAccountsTabelWidget->setRowCount(0);
+    ui->userAccountsTabelWidget->clearSelection();
+    ui->userAccountsTabelWidget->reset();
+    ui->userAccountsTabelWidget->clear();
 }
 void ManagerWidget::refreshUserAccountsTable(QTableWidgetItem* item) {
     ui->userAccountsTabelWidget->reset();
@@ -113,6 +167,7 @@ void ManagerWidget::refreshUserAccountsTable(QTableWidgetItem* item) {
     auto found = data.find(userId);
     if (found == data.end()) return;
     QTableWidgetItem* widgetItem;
+    ui->userAccountsTabelWidget->setRowCount(found->second.second->get_accounts().size());
     int row = 0;
     for (const auto& account : found->second.second->get_accounts()) {
         if (dynamic_cast<Deposit*>(account)) {

@@ -38,6 +38,7 @@ private:
 signals:
     void switchTomainScreen();
     void withdrawManager(string id);
+    void withdrawUser(string id);
 
 public slots:
     void refreshUserAccountsTable(QTableWidgetItem* item);

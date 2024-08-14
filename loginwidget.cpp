@@ -18,11 +18,13 @@ LoginWidget::LoginWidget(QWidget *parent)
     connect(ui->backBtn, &QPushButton::clicked, this, [=]() {
         ui->idLineEdit->setText(tr(""));
         ui->pwLineEdit->setText(tr(""));
+        ui->messageLabel->setText("");
         emit switchToMainScreen();
     });
 
     connect(ui->loginBtn, &QPushButton::clicked, this, &LoginWidget::login);
     connect(ui->idLineEdit, &QLineEdit::returnPressed, this, &LoginWidget::login);
+    connect(ui->pwLineEdit, &QLineEdit::returnPressed, this, &LoginWidget::login);
 }
 
 LoginWidget::~LoginWidget()
@@ -55,12 +57,14 @@ void LoginWidget::login() {
             ui->idLineEdit->setText(tr(""));
             ui->pwLineEdit->setText(tr(""));
             emit switchToUserScreen(found->first, found->second.second);
+            ui->messageLabel->setText("");
         }
         else if (dynamic_cast<Manager*>(found->second.second)) {
             qDebug() << "매니저입니다.";
             ui->idLineEdit->setText(tr(""));
             ui->pwLineEdit->setText(tr(""));
             emit switchToManagerScreen(found->first, found->second.second);
+            ui->messageLabel->setText("");
         }
     }
 }

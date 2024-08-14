@@ -90,6 +90,7 @@ WidgetController::WidgetController(QWidget* parent)
     connect(lgnwdg, &LoginWidget::switchToManagerScreen, this, [=](string id, Person* person) {
         mngwdg->setPerson(person);
         mngwdg->setId(id);
+        mngwdg->setData(data);
         lgnwdg->hide();
         mngwdg->show();
     });
@@ -105,7 +106,8 @@ WidgetController::WidgetController(QWidget* parent)
 
     // 2. SignUpComplete, SignUp -> Main
     connect(sgnupwdg, &SignUpWidget::signUpComplete, this, [=](string id, string pw){
-        data.insert(make_pair(id, make_pair(pw, new User())));
+        data.insert(make_pair(id, make_pair(pw, new User("name", 10))));
+        sgnupwdg->insertData(data);
         sgnupwdg->hide();
         mainwdg->show();
     });
@@ -142,6 +144,12 @@ WidgetController::WidgetController(QWidget* parent)
         data.erase(data.find(id));
         mngwdg->hide();
         mainwdg->show();
+    });
+
+    // 3. Delete User
+    connect(mngwdg, &ManagerWidget::withdrawUser, this, [=](string id) {
+        data.erase(data.find(id));
+        mngwdg->setData(data);
     });
 
     // ShowProducts
@@ -199,7 +207,6 @@ void WidgetController::init_data()
 
 void WidgetController::save_data()
 {
-    qDebug() << "불러졌니?";
     ofstream fout;
     fout.open(PATH);
 
@@ -210,6 +217,7 @@ void WidgetController::save_data()
             type = "User";
         else if (dynamic_cast<Manager*>(person.second.second))
             type = "Manager";
+        qDebug() << type << person.first << person.second.first;
         fout << type << " " << person.first << " " << person.second.first << " " << endl;
         fout << person.second.second->get_name() << " " << person.second.second->get_age() << endl;
         if (type == "User") {

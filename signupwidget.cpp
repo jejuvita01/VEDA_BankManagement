@@ -23,6 +23,9 @@ SignUpWidget::SignUpWidget(QWidget *parent)
     connect(ui->backBtn, &QPushButton::clicked, this, [=]() {
         ui->idLineEdit->setText(tr(""));
         ui->pwdLineEdit->setText(tr(""));
+        ui->idMessageLabel->setText("");
+        ui->pwdCheckLabel->setText("");
+        ui->pwdCheckMessageLabel->setText("");
         emit switchToMainScreen();
     });
 }
@@ -59,7 +62,12 @@ void SignUpWidget::checkIdAndPw() {
     if (idCheck && pwCheck) {
         // 아이디 중복체크, 비밀 번호 확인 완료
         // controller에서 이 signal을 받으면 객체 생성
+        ui->pwdCheckLineEdit->setText("");
+        ui->idMessageLabel->setText("");
+        ui->pwdCheckMessageLabel->setText("");
         emit signUpComplete(ui->idLineEdit->text().toStdString(), ui->pwdLineEdit->text().toStdString());
+        ui->idLineEdit->setText(tr(""));
+        ui->pwdLineEdit->setText(tr(""));
     }
 }
 
