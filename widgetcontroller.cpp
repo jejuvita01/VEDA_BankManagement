@@ -24,7 +24,9 @@ using namespace std;
 WidgetController::WidgetController(QWidget* parent)
     : QMainWindow(parent)
 {
-    resize(400, 300);
+    // sizehint 로 대체 가능
+    setMinimumSize(400, 300);
+    setMaximumSize(400, 300);
 
     mainwdg = new MainWidget(this);
     lgnwdg = new LoginWidget(this);
