@@ -188,7 +188,7 @@ void UserWidget::refreshTable()
         connect(button, &QPushButton::clicked, this, [=](){
             qDebug() << "입금 버튼";
             bool ok;
-            int money = QInputDialog::getInt(this, tr("입금"), tr("입금하실 금액을 입력해주세요."), 0, 0, 2000000000, 1, &ok);
+            int money = QInputDialog::getInt(this, tr("입금"), tr("입금하실 금액을 입력해주세요."), 0, 0, MAX_BALANCE - account->get_balance(), 1, &ok);
             if (ok && money > 0) {
                 account->deposit(money);
                 qDebug() << "입금 완료";
